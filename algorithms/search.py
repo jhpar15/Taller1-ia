@@ -17,42 +17,53 @@ def tinyHouseSearch(problem: SearchProblem):
 def depthFirstSearch(problem: SearchProblem):
     """
     Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    Punto 1: Respuesta a Baliza de Emergencia
     """
-    queue = utils.Queue()
-    visited = set()
+    frontera = utils.Stack()
+    frontera.push((problem.getStartState(), []))
+    
+    visitados = set()
 
-    queue.push((problem.getStartState(), []))
+    while not frontera.isEmpty():
+        estado, acciones = frontera.pop()
 
-    while not queue.isEmpty():
-        state, actions = queue.pop()
+        if problem.isGoalState(estado):
+            return acciones
 
-        if problem.isGoalState(state):
-            return actions
-
-        if state not in visited:
-            visited.add(state)
-
-            for successor, action, _ in problem.getSuccessors(state):
-                queue.push((successor, actions + [action]))
-
+        if estado not in visitados:
+            visitados.add(estado)
+            for sucesor, accion, costo in problem.getSuccessors(estado):
+                if sucesor not in visitados:
+                    # Construimos el nuevo camino sumando la dirección actual
+                    nuevo_camino = acciones + [accion]
+                    frontera.push((sucesor, nuevo_camino))
+    
     return []
 
 def breadthFirstSearch(problem: SearchProblem):
     """
     Search the shallowest nodes in the search tree first.
     """
-    # TODO: Add your code here
-    utils.raiseNotDefined()
+    #Usamos Queue (Cola) para BFS (FIFO)
+    frontera = utils.Queue()
+    frontera.push((problem.getStartState(), []))
+    
+    visitados = set()
+
+    while not frontera.isEmpty():
+        estado, acciones = frontera.pop()
+
+        if problem.isGoalState(estado):
+            return acciones
+
+        if estado not in visitados:
+            visitados.add(estado)
+            for sucesor, accion, costo in problem.getSuccessors(estado):
+                if sucesor not in visitados:
+                    nuevo_camino = acciones + [accion]
+                    frontera.push((sucesor, nuevo_camino))
+                    
+    return []
 
 
 def uniformCostSearch(problem: SearchProblem):
