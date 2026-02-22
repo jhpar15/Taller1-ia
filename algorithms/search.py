@@ -1,7 +1,7 @@
 from algorithms.problems import SearchProblem
 import algorithms.utils as utils
 from world.game import Directions
-from algorithms.heuristics import nullHeuristic
+from algorithms.heuristics import  nullHeuristic
 
 
 def tinyHouseSearch(problem: SearchProblem):
